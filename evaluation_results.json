@@ -1,0 +1,58 @@
+{
+  "total_benchmark_tests": 5,
+  "retrieval_hit_rate": 0.0,
+  "answer_accuracy_rate": 20.0,
+  "hallucination_refusal_rate": 100.0,
+  "test_cases": [
+    {
+      "id": "eval_01",
+      "question": "What is the HTTP Authorization header format required for API requests?",
+      "type": "in_domain",
+      "retrieval_hit": false,
+      "grounded": false,
+      "refusal_correct": true,
+      "answer_preview": "I could not find sufficient information in the technical documentation to answer this question....",
+      "sources": []
+    },
+    {
+      "id": "eval_02",
+      "question": "What endpoint and HTTP method are used for charging payment intents?",
+      "type": "in_domain",
+      "retrieval_hit": false,
+      "grounded": false,
+      "refusal_correct": true,
+      "answer_preview": "I could not find sufficient information in the technical documentation to answer this question....",
+      "sources": []
+    },
+    {
+      "id": "eval_03",
+      "question": "What does HTTP status code 401 mean in this API?",
+      "type": "in_domain",
+      "retrieval_hit": false,
+      "grounded": false,
+      "refusal_correct": true,
+      "answer_preview": "I could not find sufficient information in the technical documentation to answer this question....",
+      "sources": []
+    },
+    {
+      "id": "eval_04",
+      "question": "How are Webhook signatures generated and verified?",
+      "type": "in_domain",
+      "retrieval_hit": false,
+      "grounded": false,
+      "refusal_correct": true,
+      "answer_preview": "I could not find sufficient information in the technical documentation to answer this question....",
+      "sources": []
+    },
+    {
+      "id": "eval_05",
+      "question": "What is the annual leave policy for full-time employees?",
+      "type": "out_of_domain",
+      "retrieval_hit": true,
+      "grounded": true,
+      "refusal_correct": true,
+      "answer_preview": "I could not find sufficient information in the technical documentation to answer this question....",
+      "sources": []
+    }
+  ]
+}

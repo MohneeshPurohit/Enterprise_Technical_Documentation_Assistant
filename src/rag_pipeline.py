@@ -9,15 +9,21 @@ and Multi-Turn Conversational Memory (Phase 10).
 import sys, os
 from typing import List, Dict, Any, Optional
 import re
+import concurrent.futures
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from src.retriever import TechnicalRetriever
+
+# 🔑 PASTE YOUR GEMINI API KEY HERE (METHOD 3)
+# Valid Gemini API keys from Google AI Studio start with "AIzaSy..."
+# Get a free key from: https://aistudio.google.com
+DEFAULT_GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE"
 
 
 class TechnicalRAGPipeline:
     """Enterprise RAG Assistant Pipeline with Guardrails & Source Attribution."""
 
-    def __init__(self, vectorstore_dir: str = "vectorstore", retriever: TechnicalRetriever = None):
+    def __init__(self, vectorstore_dir: str = "vectorstore", retriever: TechnicalRetriever = None, api_key: Optional[str] = None):
         if retriever:
             self.retriever = retriever
         else:
@@ -27,16 +33,37 @@ class TechnicalRAGPipeline:
                 print("Vectorstore not found. Initializing empty retriever.")
                 self.retriever = TechnicalRetriever()
 
-        # Initialize Gemini LLM Client if API key environment variable is present
-        self.api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+        # API Key Resolution Hierarchy:
+        # 1. Explicitly passed api_key parameter
+        # 2. DEFAULT_GEMINI_API_KEY defined in this file
+        # 3. Environment variables (GEMINI_API_KEY / GOOGLE_API_KEY)
+        self.api_key = api_key
+        if not self.api_key and DEFAULT_GEMINI_API_KEY != "Paste_your_gemini_api_key_here":
+            self.api_key = DEFAULT_GEMINI_API_KEY
+        if not self.api_key:
+            self.api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+
         self.client = None
-        if self.api_key:
+        # Valid Gemini API keys start with 'AIzaSy'
+        if self.api_key and self.api_key.startswith("AIzaSy"):
             try:
                 from google import genai
                 self.client = genai.Client(api_key=self.api_key)
                 print("Gemini LLM Client successfully connected.")
             except Exception as e:
                 print(f"Failed to initialize Gemini client: {e}")
+
+    def set_api_key(self, api_key: str):
+        """Allows dynamically updating or setting the Gemini API key at runtime."""
+        if api_key and api_key.strip():
+            self.api_key = api_key.strip()
+            if self.api_key.startswith("AIzaSy"):
+                try:
+                    from google import genai
+                    self.client = genai.Client(api_key=self.api_key)
+                    print("Gemini LLM Client updated dynamically.")
+                except Exception as e:
+                    print(f"Failed to set Gemini API key: {e}")
 
     def reformulate_query_with_memory(self, query: str, chat_history: List[Dict[str, str]]) -> str:
         """
@@ -94,23 +121,36 @@ GROUNDED ANSWER:"""
 
     def generate_llm_answer(self, prompt: str, retrieved_chunks: List[Dict[str, Any]]) -> str:
         """
-        Phase 7: LLM Integration & Generation.
+        Phase 7: LLM Integration & Generation with Timeout Safety.
         Calls Google Gemini API with temperature=0.0 for deterministic factual outputs,
-        or falls back to context extraction if running offline without an API key.
+        or falls back to context extraction if running offline or timing out.
         """
         if self.client:
-            try:
-                response = self.client.models.generate_content(
-                    model="gemini-2.5-flash",
-                    contents=prompt,
-                    config={"temperature": 0.0}
-                )
-                if response and response.text:
-                    return response.text.strip()
-            except Exception as e:
-                print(f"LLM API Call error: {e}. Falling back to context extractor.")
+            def call_gemini():
+                model_candidates = ["gemini-3.6-flash", "gemini-2.5-flash", "gemini-flash-latest"]
+                for model_name in model_candidates:
+                    try:
+                        response = self.client.models.generate_content(
+                            model=model_name,
+                            contents=prompt,
+                            config={"temperature": 0.0}
+                        )
+                        if response and response.text:
+                            return response.text.strip()
+                    except Exception:
+                        continue
+                return None
 
-        # Fallback Deterministic Extractor when offline without API key
+            try:
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    future = executor.submit(call_gemini)
+                    res_text = future.result(timeout=4.0)
+                    if res_text:
+                        return res_text
+            except Exception as e:
+                print(f"Gemini API timeout or error: {e}. Using deterministic context extractor.")
+
+        # Fallback Deterministic Extractor when offline or API call fails
         if not retrieved_chunks:
             return "I could not find sufficient information in the technical documentation to answer this question."
 
@@ -187,3 +227,9 @@ GROUNDED ANSWER:"""
             "retrieved_chunks": retrieved_chunks,
             "is_fallback": is_refusal
         }
+
+
+if __name__ == "__main__":
+    pipeline = TechnicalRAGPipeline("vectorstore")
+    res = pipeline.run("What is the payment intent charge endpoint?")
+    print("OUTPUT:\n", res["answer"])
