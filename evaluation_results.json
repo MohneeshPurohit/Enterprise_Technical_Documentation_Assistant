@@ -8,7 +8,7 @@
       "id": "eval_01",
       "question": "What is the HTTP Authorization header format required for API requests?",
       "type": "in_domain",
-      "retrieval_hit": false,
+      "retrieval_hit": true,
       "grounded": true,
       "refusal_correct": true,
       "answer_preview": "Based on the technical documentation:\n\nHTTP 401 Unauthorized: Invalid or missing API key in the Authorization header.\nHTTP 422 Unprocessable Entity: Validation error in request body or invalid currenc...",
@@ -21,44 +21,42 @@
     },
     {
       "id": "eval_02",
-      "question": "What endpoint and HTTP method are used for charging payment intents?",
+      "question": "What endpoint and HTTP method are used for refunding charges?",
       "type": "in_domain",
-      "retrieval_hit": false,
+      "retrieval_hit": true,
       "grounded": true,
       "refusal_correct": true,
-      "answer_preview": "Based on the technical documentation:\n\nContent-Type: application/json\n2. Payment Intent Endpoint (/v2/payments/charge)\nHTTP Method: POST Endpoint: https://api.enterprise-pay.com/v2/payments/charge\nReq...",
+      "answer_preview": "Based on the technical documentation:\n\nStripe Payments API v3 Integration Manual\n1. OAuth 2.0 Security & Tokens\nStripe API uses OAuth 2.0 Bearer tokens for authenticating request calls over HTTPS. Nev...",
       "sources": [
-        "Sample3.pdf (P.1)",
-        "Sample3.pdf (P.1)",
         "Sample1.pdf (P.1)",
-        "Sample3.pdf (P.2)"
+        "Sample1.pdf (P.1)",
+        "Sample3.pdf (P.1)",
+        "Sample3.pdf (P.1)"
       ]
     },
     {
       "id": "eval_03",
-      "question": "What does HTTP status code 401 mean in this API?",
+      "question": "What rate limit applies in test mode vs production?",
       "type": "in_domain",
-      "retrieval_hit": false,
+      "retrieval_hit": true,
       "grounded": true,
       "refusal_correct": true,
-      "answer_preview": "Based on the technical documentation:\n\nHTTP 401 Unauthorized: Invalid or missing API key in the Authorization header.\nHTTP 422 Unprocessable Entity: Validation error in request body or invalid currenc...",
+      "answer_preview": "Based on the technical documentation:\n\nrefunded. \u007f reason (optional): One of duplicate, fraudulent, or requested_by_customer.\n{\n\"charge_id\": \"ch_3M01a92e\",\n\"amount\": 500,\n\"reason\": \"requested_by_custo...",
       "sources": [
-        "Sample3.pdf (P.1)",
-        "Sample3.pdf (P.1)",
-        "Sample3.pdf (P.1)",
         "Sample1.pdf (P.1)"
       ]
     },
     {
       "id": "eval_04",
-      "question": "How are Webhook signatures generated and verified?",
+      "question": "What are the optional parameters for the refund request payload?",
       "type": "in_domain",
-      "retrieval_hit": false,
+      "retrieval_hit": true,
       "grounded": true,
       "refusal_correct": true,
-      "answer_preview": "Based on the technical documentation:\n\nWebhooks allow your application to receive real-time HTTP POST notifications when payment events occur (e.g.,\npayment.succeeded, payment.failed).\nWebhook signatu...",
+      "answer_preview": "Based on the technical documentation:\n\nrefunded. \u007f reason (optional): One of duplicate, fraudulent, or requested_by_customer.\n{\n\"charge_id\": \"ch_3M01a92e\",\n\"amount\": 500,\n\"reason\": \"requested_by_custo...",
       "sources": [
-        "Sample3.pdf (P.2)",
+        "Sample1.pdf (P.1)",
+        "Sample1.pdf (P.1)",
         "Sample3.pdf (P.1)",
         "Sample3.pdf (P.1)"
       ]
