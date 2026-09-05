@@ -1,7 +1,7 @@
 {
   "total_benchmark_tests": 5,
   "retrieval_hit_rate": 0.0,
-  "answer_accuracy_rate": 20.0,
+  "answer_accuracy_rate": 100.0,
   "hallucination_refusal_rate": 100.0,
   "test_cases": [
     {
@@ -9,40 +9,59 @@
       "question": "What is the HTTP Authorization header format required for API requests?",
       "type": "in_domain",
       "retrieval_hit": false,
-      "grounded": false,
+      "grounded": true,
       "refusal_correct": true,
-      "answer_preview": "I could not find sufficient information in the technical documentation to answer this question....",
-      "sources": []
+      "answer_preview": "Based on the technical documentation:\n\nHTTP 401 Unauthorized: Invalid or missing API key in the Authorization header.\nHTTP 422 Unprocessable Entity: Validation error in request body or invalid currenc...",
+      "sources": [
+        "Sample3.pdf (P.1)",
+        "Sample3.pdf (P.1)",
+        "Sample3.pdf (P.1)",
+        "Sample1.pdf (P.1)"
+      ]
     },
     {
       "id": "eval_02",
       "question": "What endpoint and HTTP method are used for charging payment intents?",
       "type": "in_domain",
       "retrieval_hit": false,
-      "grounded": false,
+      "grounded": true,
       "refusal_correct": true,
-      "answer_preview": "I could not find sufficient information in the technical documentation to answer this question....",
-      "sources": []
+      "answer_preview": "Based on the technical documentation:\n\nContent-Type: application/json\n2. Payment Intent Endpoint (/v2/payments/charge)\nHTTP Method: POST Endpoint: https://api.enterprise-pay.com/v2/payments/charge\nReq...",
+      "sources": [
+        "Sample3.pdf (P.1)",
+        "Sample3.pdf (P.1)",
+        "Sample1.pdf (P.1)",
+        "Sample3.pdf (P.2)"
+      ]
     },
     {
       "id": "eval_03",
       "question": "What does HTTP status code 401 mean in this API?",
       "type": "in_domain",
       "retrieval_hit": false,
-      "grounded": false,
+      "grounded": true,
       "refusal_correct": true,
-      "answer_preview": "I could not find sufficient information in the technical documentation to answer this question....",
-      "sources": []
+      "answer_preview": "Based on the technical documentation:\n\nHTTP 401 Unauthorized: Invalid or missing API key in the Authorization header.\nHTTP 422 Unprocessable Entity: Validation error in request body or invalid currenc...",
+      "sources": [
+        "Sample3.pdf (P.1)",
+        "Sample3.pdf (P.1)",
+        "Sample3.pdf (P.1)",
+        "Sample1.pdf (P.1)"
+      ]
     },
     {
       "id": "eval_04",
       "question": "How are Webhook signatures generated and verified?",
       "type": "in_domain",
       "retrieval_hit": false,
-      "grounded": false,
+      "grounded": true,
       "refusal_correct": true,
-      "answer_preview": "I could not find sufficient information in the technical documentation to answer this question....",
-      "sources": []
+      "answer_preview": "Based on the technical documentation:\n\nWebhooks allow your application to receive real-time HTTP POST notifications when payment events occur (e.g.,\npayment.succeeded, payment.failed).\nWebhook signatu...",
+      "sources": [
+        "Sample3.pdf (P.2)",
+        "Sample3.pdf (P.1)",
+        "Sample3.pdf (P.1)"
+      ]
     },
     {
       "id": "eval_05",
