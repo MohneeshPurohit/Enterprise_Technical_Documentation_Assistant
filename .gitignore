@@ -216,3 +216,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Vector Store Persistence & Temp Caches (Built dynamically at runtime)
+vectorstore/
+*.bin
+*.pkl
+tmp/
