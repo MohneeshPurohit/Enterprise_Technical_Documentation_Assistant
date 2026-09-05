@@ -1,6 +1,6 @@
 {
   "total_benchmark_tests": 5,
-  "retrieval_hit_rate": 0.0,
+  "retrieval_hit_rate": 100.0,
   "answer_accuracy_rate": 100.0,
   "hallucination_refusal_rate": 100.0,
   "test_cases": [
